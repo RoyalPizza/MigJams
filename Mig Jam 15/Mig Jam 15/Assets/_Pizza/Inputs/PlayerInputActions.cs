@@ -46,6 +46,15 @@ namespace Pizza.SimpleInput
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b186ee80-c2f7-4d28-acc4-147a32539c8b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -233,6 +242,17 @@ namespace Pizza.SimpleInput
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""PauseCommand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be8ed12b-3483-40de-9252-7a15ffc241ed"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -822,6 +842,7 @@ namespace Pizza.SimpleInput
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_PauseCommand = m_Player.FindAction("PauseCommand", throwIfNotFound: true);
+            m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -897,12 +918,14 @@ namespace Pizza.SimpleInput
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_PauseCommand;
+        private readonly InputAction m_Player_Run;
         public struct PlayerActions
         {
             private @PlayerInputActions m_Wrapper;
             public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @PauseCommand => m_Wrapper.m_Player_PauseCommand;
+            public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -918,6 +941,9 @@ namespace Pizza.SimpleInput
                 @PauseCommand.started += instance.OnPauseCommand;
                 @PauseCommand.performed += instance.OnPauseCommand;
                 @PauseCommand.canceled += instance.OnPauseCommand;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -928,6 +954,9 @@ namespace Pizza.SimpleInput
                 @PauseCommand.started -= instance.OnPauseCommand;
                 @PauseCommand.performed -= instance.OnPauseCommand;
                 @PauseCommand.canceled -= instance.OnPauseCommand;
+                @Run.started -= instance.OnRun;
+                @Run.performed -= instance.OnRun;
+                @Run.canceled -= instance.OnRun;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1112,6 +1141,7 @@ namespace Pizza.SimpleInput
         {
             void OnMove(InputAction.CallbackContext context);
             void OnPauseCommand(InputAction.CallbackContext context);
+            void OnRun(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

@@ -23,8 +23,10 @@ namespace Pizza.CharacterControl
             DirectCharacter();
         }
 
-        private void Update()
+        private new void Update()
         {
+            base.Update();
+
             _distanceToTarget = Vector2.Distance(_rigidbody.position, _targets[_currentTarget].position);
             if (_distanceToTarget <= _distanceToTargetGoal)
             {

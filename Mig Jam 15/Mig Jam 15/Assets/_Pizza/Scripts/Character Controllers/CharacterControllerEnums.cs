@@ -3,7 +3,7 @@ namespace Pizza.CharacterControl
     /// <summary>
     /// An enum representing the method of transport being used for movment.
     /// </summary>
-    public enum MovementTransport { Normal, Surf, Ride }
+    public enum MovementTransport { Normal }
 
     /// <summary>
     /// An enum representing the speed the player is moving.

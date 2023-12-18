@@ -27,6 +27,14 @@ namespace Pizza.CharacterControl
         protected const string ANIM_PARAM_HORIZONTAL = "Horizontal";
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// Even though it shows at 0 in the UI, it starts with 1.
+        /// </remarks>
+        private const int DEFAULT_LAYER_MASK = 1;
+
+        /// <summary>
         /// An array of transport configurations to use
         /// </summary>
         [SerializeField]
@@ -54,7 +62,13 @@ namespace Pizza.CharacterControl
         /// A reference to the character collider component
         /// </summary>
         [SerializeField]
-        protected BoxCollider2D _collider;
+        protected Collider2D _collider;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [SerializeField]
+        private Vector2 _rigidbodyCastPositionOffset = new Vector2(0.0f, 0.3f);
 
         /// <summary>
         /// The currently cached movement input being applied to the character.
@@ -105,10 +119,16 @@ namespace Pizza.CharacterControl
         protected MovementTransportConfig _movementTransportValue;
 
         /// <summary>
+        /// The position to do raycasts from based on rigidbody position
+        /// </summary>
+        private Vector2 _rigidbodyCastPosition = Vector2.zero;
+
+        /// <summary>
         /// States if the character is moving or not.
         /// </summary>
         public bool IsMoving => _movementSpeed != MovementSpeed.Idle;
 
+        private bool _playingCustomState;
         private bool _lineCastResult;
         private Vector2 _lineCastTargetPosition;
         private LayerMask _colliderLayerMask;
@@ -125,7 +145,7 @@ namespace Pizza.CharacterControl
                 _colliderLayerMask = LayerMask.GetMask("Default");
 
             if (_collider == null)
-                _collider = GetComponent<BoxCollider2D>();
+                _collider = GetComponent<Collider2D>();
         }
 
         protected void Start()
@@ -139,20 +159,21 @@ namespace Pizza.CharacterControl
             SetCustomMovementDirection(MovementDirection.Down);
         }
 
-        private void Update()
+        protected void Update()
         {
-            Debug.DrawLine(_rigidbody.position, _lineCastTargetPosition, Color.red);
+            Debug.DrawLine(_rigidbodyCastPosition, _lineCastTargetPosition, Color.red);
         }
 
         protected void FixedUpdate()
         {
             if (_movementSpeed != MovementSpeed.Idle)
             {
-                _lineCastTargetPosition = _rigidbody.position + _movementInputLineCast;
+                _rigidbodyCastPosition = _rigidbody.position + _rigidbodyCastPositionOffset;
+                _lineCastTargetPosition = _rigidbodyCastPosition + _movementInputLineCast;
 
                 // Do a linecast check for collision
                 _lineCastResult = false;
-                var raycastHits = Physics2D.LinecastAll(_rigidbody.position, _lineCastTargetPosition);
+                var raycastHits = Physics2D.LinecastAll(_rigidbodyCastPosition, _lineCastTargetPosition, DEFAULT_LAYER_MASK);
                 foreach (var hit in raycastHits)
                 {
                     // If this is our own collider, move on
@@ -181,7 +202,7 @@ namespace Pizza.CharacterControl
             string animStateName = _movementTransportValue.GetStateName(_movementSpeed);
 
             // Check to see if the animator is in the state we want to be in
-            if (_animator.GetCurrentAnimatorStateInfo(ANIM_LAYER).IsName(animStateName) == false)
+            if (_playingCustomState == false && _animator.GetCurrentAnimatorStateInfo(ANIM_LAYER).IsName(animStateName) == false)
             {
                 _animator.Play(animStateName, ANIM_LAYER);
             }
@@ -239,6 +260,17 @@ namespace Pizza.CharacterControl
 
             // Update the animations based on the new move state
             UpdateAnimator();
+        }
+
+        protected void SetCustomState(string state)
+        {
+            _playingCustomState = true;
+            _animator.Play(state);
+        }
+
+        protected void ClearCustomState()
+        {
+            _playingCustomState = false;
         }
 
         /// <summary>
@@ -326,15 +358,7 @@ namespace Pizza.CharacterControl
                 SetPreferredMovementSpeed(MovementSpeed.Fast);
 
             GUILayout.Space(10);
-            if (GUILayout.Button(("Normal"), PizzaOnGUI.NormalButton))
-                SetMovementTransport(MovementTransport.Normal);
-            if (GUILayout.Button(("Surf"), PizzaOnGUI.NormalButton))
-                SetMovementTransport(MovementTransport.Surf);
-            if (GUILayout.Button(("Ride"), PizzaOnGUI.NormalButton))
-                SetMovementTransport(MovementTransport.Ride);
-
-            GUILayout.Space(10);
-            GUILayout.Label($"Line Cast: {_rigidbody.position} - {_lineCastTargetPosition}", PizzaOnGUI.NormalLabel);
+            GUILayout.Label($"Line Cast: {_rigidbodyCastPosition} - {_lineCastTargetPosition}", PizzaOnGUI.NormalLabel);
             GUILayout.Label($"Line Cast Result: {_lineCastResult}", PizzaOnGUI.NormalLabel);
 
             GUILayout.EndVertical();
