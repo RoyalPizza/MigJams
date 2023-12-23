@@ -1,5 +1,5 @@
+using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,15 @@ namespace Pizza.SaveSystem
         public event EventHandler GameSaving;
         public event EventHandler GameLoading;
         private Dictionary<string, string> _saveData;
+
+        [SerializeField, TableList, FoldoutGroup("Flags"), LabelText("Boolean")]
+        private SaveFlagBoolean[] _saveFlagsBoolean;
+
+        [SerializeField, TableList, FoldoutGroup("Flags"), LabelText("Integer")]
+        private SaveFlagInteger[] _saveFlagsInteger;
+
+        [SerializeField, TableList, FoldoutGroup("Flags"), LabelText("Vector 2")]
+        private SaveFlagVector2[] _saveFlagsVector2;
 
         private void OnGameSave()
         {
