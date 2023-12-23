@@ -1,8 +1,8 @@
-using Pizza.SimpleInput;
+using Pizza.InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     /// <summary>
     /// A character controller that accepts player input.

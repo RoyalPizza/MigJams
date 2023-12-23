@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     public interface ICharacterVision
     {

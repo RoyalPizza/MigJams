@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     /// <summary>
     /// This class repreents a movement transport configuration.

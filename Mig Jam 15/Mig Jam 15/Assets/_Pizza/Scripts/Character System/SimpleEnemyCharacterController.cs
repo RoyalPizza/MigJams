@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     public class SimpleEnemyCharacterController : BaseCharacterController, ICharacterVision
     {
@@ -21,6 +21,8 @@ namespace Pizza.CharacterControl
         private Transform _enemyTarget;
         private Vector2 _enemyTargetDirection;
 
+
+#if UNITY_EDITOR
         private new void OnValidate()
         {
             base.OnValidate();
@@ -30,6 +32,7 @@ namespace Pizza.CharacterControl
             if (_characterVision.TargetLost.GetPersistentEventCount() == 0)
                 UnityEditor.Events.UnityEventTools.AddPersistentListener(_characterVision.TargetLost, OnTargetLost);
         }
+#endif
 
         private new void Start()
         {
@@ -73,6 +76,7 @@ namespace Pizza.CharacterControl
                 base.FixedUpdate();
         }
 
+#if UNITY_EDITOR
         protected new void OnGUI()
         {
             if (UnityEditor.Selection.activeGameObject != this.gameObject)
@@ -92,6 +96,7 @@ namespace Pizza.CharacterControl
 
             GUILayout.EndVertical();
         }
+#endif
 
         private void DirectCharacter()
         {

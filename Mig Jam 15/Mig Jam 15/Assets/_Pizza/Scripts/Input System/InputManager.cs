@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pizza.SimpleInput
+namespace Pizza.InputSystem
 {
     /// <summary>
     /// A manager SO that handles the input asset.

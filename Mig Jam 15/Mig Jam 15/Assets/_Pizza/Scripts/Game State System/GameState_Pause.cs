@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pizza
+namespace Pizza.GameStateSystem
 {
     /// <summary>
     /// 

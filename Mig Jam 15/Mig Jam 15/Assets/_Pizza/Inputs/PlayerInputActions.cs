@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Pizza.SimpleInput
+namespace Pizza.InputSystem
 {
     public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {

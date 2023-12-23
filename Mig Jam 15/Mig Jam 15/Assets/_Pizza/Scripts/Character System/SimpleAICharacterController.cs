@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     public class SimpleAICharacterController : BaseCharacterController
     {
@@ -54,6 +54,7 @@ namespace Pizza.CharacterControl
                 SetInput(Vector2.right);
         }
 
+#if UNITY_EDITOR
         protected new void OnGUI()
         {
             if (UnityEditor.Selection.activeGameObject != this.gameObject)
@@ -66,5 +67,6 @@ namespace Pizza.CharacterControl
             GUILayout.Label($"Distance to Target: {_distanceToTarget}", PizzaOnGUI.NormalLabel);
             GUILayout.EndVertical();
         }
+#endif
     }
 }

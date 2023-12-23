@@ -1,7 +1,8 @@
+using Pizza.GameStateSystem;
 using System.Linq;
 using UnityEngine;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     /// <summary>
     /// A base class for character controlling.

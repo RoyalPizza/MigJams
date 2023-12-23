@@ -1,4 +1,4 @@
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     /// <summary>
     /// An enum representing the method of transport being used for movment.

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Pizza.CharacterControl
+namespace Pizza.CharacterSystem
 {
     /// <summary>
     /// 
@@ -56,6 +56,7 @@ namespace Pizza.CharacterControl
             }
         }
 
+#if UNITY_EDITOR
         private void OnGUI()
         {
             if (UnityEditor.Selection.activeGameObject != this.gameObject)
@@ -66,5 +67,6 @@ namespace Pizza.CharacterControl
             GUILayout.Label($"Target: {_target?.name}", PizzaOnGUI.NormalLabel);
             GUILayout.EndVertical();
         }
+#endif
     }
 }
