@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Pizza.CharacterSystem
@@ -131,7 +130,7 @@ namespace Pizza.CharacterSystem
         {
             Vector2 direction;
             Vector2 positionDifference = target - position;
-            
+
             // If the target is futher away on the X axis, use Left/Right
             if (Mathf.Abs(positionDifference.x) > Mathf.Abs(positionDifference.y))
             {
@@ -145,7 +144,7 @@ namespace Pizza.CharacterSystem
                 // Positve values are up, negative values are down
                 direction = (positionDifference.y > 0) ? Vector2.up : Vector2.down;
             }
-                
+
 
             return direction;
         }
